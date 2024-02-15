@@ -14,6 +14,10 @@ class ProjectCategoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'name' => $this->name,
+            'description' => $this->description,
+            'image_url' => $this->image_url
+        ];
     }
 }
