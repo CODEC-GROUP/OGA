@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProjectCategory;
-use App\Models\User;
 use Exception;
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\ProjectCategory;
 use Illuminate\Support\Facades\Storage;
 
 class UploadImage extends Controller
@@ -28,8 +29,11 @@ class UploadImage extends Controller
             return $data;
         } else {
 
-            if ($user->image) {
-                Storage::disk('public')->delete($user->image);
+            if ($user->image_url) {
+
+                $finalUrlImage = Str::replace('storage/', '', $user->image_url);
+                $user->image_url = $finalUrlImage;
+                Storage::disk('public')->delete($user->image_url);
             }
 
             $data['image_url'] = $data['image_url']->store('images/' . $folderNameUserImage, 'public');
@@ -49,8 +53,11 @@ class UploadImage extends Controller
             return $data;
         } else {
 
-            if ($projectCategory->image) {
-                Storage::disk('public')->delete($projectCategory->image);
+            if ($projectCategory->image_url) {
+
+                $finalUrlImage = Str::replace('storage/', '', $projectCategory->image_url);
+                $projectCategory->image_url = $finalUrlImage;
+                Storage::disk('public')->delete($projectCategory->image_url);
             }
 
             $data['image_url'] = $data['image_url']->store('images/' . $folderNameProjectCategoriesImage, 'public');
