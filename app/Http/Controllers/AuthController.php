@@ -49,33 +49,32 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-      
-     
-            $validated = $request->validate([
-                'name' => 'required|max:255',
-                'email' => 'required|email|max:255|unique:users,email',
-                'password' => 'required|confirmed|min:6',
-                'image_url' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048'
-            ]);
-         
 
-           
-            $validated['password'] = Hash::make($validated['password']);
 
-            $dataWithImage = new UploadImage();
-            $userImage = new User();
-            $finalDataUser = $dataWithImage->storeAndUpdateImageUser($validated,$userImage,$folderNameUserImage = "user");
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|confirmed|min:6',
+            'image_url' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048'
+        ]);
+
+
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $dataWithImage = new UploadImage();
+        $userImage = new User();
+        $finalDataUser = $dataWithImage->storeAndUpdateImageUser($validated, $userImage, $folderNameUserImage = "user");
         //   dd($finalDataUser);
-            $user = User::create($finalDataUser);
+        $user = User::create($finalDataUser);
 
-            return response()->json([
-                'status' => 1,
-                'status_message' => 'Successfully registered user',
-                'access_token' => $user->createToken('api_token')->plainTextToken,
-                'token_type' => 'Bearer',
-                'user' => $user
-            ], 201);
-      
+        return response()->json([
+            'status' => 1,
+            'status_message' => 'Successfully registered user',
+            'access_token' => $user->createToken('api_token')->plainTextToken,
+            'token_type' => 'Bearer',
+            'user' => $user
+        ], 201);
     }
 
 
@@ -88,39 +87,37 @@ class AuthController extends Controller
      */
     public function update(Request $request, User $user)
     {
-      
-
-            if($user->id != auth()->user()->id){
-                return response()->json([
-                    'status_code' => 0,
-                    'message' => 'Permission Denied',
-                ], 403);
-            }
 
 
-            $validated = $request->validate([
-                'name' => 'required|max:255',
-                'email' => 'required|email|max:255|unique:users,email',
-                'password' => 'required|confirmed|min:6',
-                'image_url' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048'
-            ]);
-            
-            $validated['password'] = Hash::make($validated['password']);
-           
-
-            $dataWithImage = new UploadImage();
-           
-            $finalDataUser = $dataWithImage->storeAndUpdateImageUser($validated,$user,$folderNameUserImage = "user");
-           
-            $user->update($finalDataUser);
-
+        if ($user->id != auth()->user()->id) {
             return response()->json([
-                'status_message' => 'Successfully updated user',
-                'access_token' => $user->createToken('api_token')->plainTextToken,
-                'token_type' => 'Bearer',
-            ], 201);
+                'status_code' => 0,
+                'message' => 'Permission Denied',
+            ], 403);
+        }
 
-      
+
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|confirmed|min:6',
+            'image_url' => 'nullable|image|mimes:jpeg,jpg,png,svg|max:2048'
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+
+        $dataWithImage = new UploadImage();
+
+        $finalDataUser = $dataWithImage->storeAndUpdateImageUser($validated, $user, $folderNameUserImage = "user");
+
+        $user->update($finalDataUser);
+
+        return response()->json([
+            'status_message' => 'Successfully updated user',
+            'access_token' => $user->createToken('api_token')->plainTextToken,
+            'token_type' => 'Bearer',
+        ], 201);
     }
 
 

@@ -16,43 +16,25 @@ class UploadImage extends Controller
      * @param string $folderNameUserImage
     */
 
-    public function storeAndUpdateImageUser(array $data, User $user,string $folderNameUserImage="user")
+    public function storeAndUpdateImageUser(array $data, User $user, string $folderNameUserImage = "user")
     {
-       
-        
 
-        if(!isset($data['image_url']))
-        {
- 
-         $data['image_url'] = "storage/images/user/userDefaultsImage.png";
-         return $data;
- 
-        } 
-        else
-        {
-           
-         if ($user->image) {
-             Storage::disk('public')->delete($user->image);
-         }
- 
-         $data['image_url'] = $data['image_url']->store('images/'.$folderNameUserImage, 'public');
-         $data['image_url'] = "storage/".$data['image_url'];
-        //  dd($data['image_url']);
-         return $data;
- 
- 
+
+
+        if (!isset($data['image_url'])) {
+
+            $data['image_url'] = "storage/images/user/userDefaultsImage.png";
+            return $data;
+        } else {
+
+            if ($user->image) {
+                Storage::disk('public')->delete($user->image);
+            }
+
+            $data['image_url'] = $data['image_url']->store('images/' . $folderNameUserImage, 'public');
+            $data['image_url'] = "storage/" . $data['image_url'];
+            //  dd($data['image_url']);
+            return $data;
         }
-
-    
-
-       
     }
-
-
-
-
-
-
-
-
 }
