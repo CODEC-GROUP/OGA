@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\ProjectCategory;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UploadImage;
+use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\ProjectCategoryResource;
+use App\Http\Resources\ProjectCategoryCollection;
 use App\Http\Requests\StoreProjectCategoryRequest;
 use App\Http\Requests\UpdateProjectCategoryRequest;
-use App\Http\Resources\ProjectCategoryCollection;
-use App\Http\Resources\ProjectCategoryResource;
-use App\Models\ProjectCategory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectCategoryController extends Controller
 {
@@ -39,7 +42,10 @@ class ProjectCategoryController extends Controller
     public function store(StoreProjectCategoryRequest $request)
     {
         $validated = $request->validated();
-        $category = ProjectCategory::create($validated);
+        $dataWithImage = new UploadImage();
+        $projectCategoryImage = new ProjectCategory();
+        $finalDataUser = $dataWithImage->storeAndUpdateProjectCategoriesImages($validated, $projectCategoryImage, $folderNameUserImage = "projectCategories");
+        $category = ProjectCategory::create($finalDataUser);
         return new ProjectCategoryResource($category);
     }
 
@@ -65,7 +71,10 @@ class ProjectCategoryController extends Controller
     {
         $validated = $request->validated();
 
-        $category->update($validated);
+        $dataWithImage = new UploadImage();
+        $finalDataUser = $dataWithImage->storeAndUpdateProjectCategoriesImages($validated, $category, $folderNameUserImage = "projectCategories");
+
+        $category->update($finalDataUser);
         return new ProjectCategoryResource($category);
     }
 
@@ -78,6 +87,12 @@ class ProjectCategoryController extends Controller
      */
     public function destroy(Request $request, ProjectCategory $category)
     {
+        if ($category->image_url) {
+
+            $finalUrlImage = Str::replace('storage/', '', $category->image_url);
+            $category->image_url = $finalUrlImage;
+            Storage::disk('public')->delete($category->image_url);
+        }
         $category->delete();
         return response()->noContent();
     }
