@@ -37,7 +37,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
-            'user' => $user
+
         ]);
     }
 
@@ -69,11 +69,9 @@ class AuthController extends Controller
         $user = User::create($finalDataUser);
 
         return response()->json([
-            'status' => 1,
-            'status_message' => 'Successfully registered user',
             'access_token' => $user->createToken('api_token')->plainTextToken,
             'token_type' => 'Bearer',
-            'user' => $user
+
         ], 201);
     }
 
@@ -91,7 +89,6 @@ class AuthController extends Controller
 
         if ($user->id != auth()->user()->id) {
             return response()->json([
-                'status_code' => 0,
                 'message' => 'Permission Denied',
             ], 403);
         }

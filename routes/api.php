@@ -26,7 +26,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', ProjectCategoryController::class);
-    Route::post('/users/update/{user}', [AuthController::class,'update']);
+    Route::post('/users/update/{user}', [AuthController::class, 'update']);
 });
 
 Route::apiResource('contacts', ContactController::class);
