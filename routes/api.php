@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProjectCategoryController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/categories/{category}', [ProjectCategoryController::class, 'update']);
     Route::apiResource('categories', ProjectCategoryController::class)->except('update');
     Route::post('/users/update/{user}', [AuthController::class, 'update']);
+    Route::apiResource('/settings', SettingController::class)->only(['update', 'show']);
 });
 
 Route::apiResource('contacts', ContactController::class);
