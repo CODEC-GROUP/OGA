@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'sometimes|required',
             'content' => 'sometimes|required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|array|image|mimes:jpeg,png,jpg|max:2048',
             'type' => 'sometimes|required|in:Project,Blog,Event',
             'statistics' => 'nullable|array', // Add specific validation rules for Project statistics
             'event_date' => 'nullable|date', // Add specific validation rules for Event date

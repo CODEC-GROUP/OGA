@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
-use App\Http\Resources\PostCollection;
-use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Resources\PostResource;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Resources\PostCollection;
+use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -38,9 +40,10 @@ class PostController extends Controller
     public function store(StorePostRequest $request): PostResource
     {
         $validatedData = $request->validated();
-
-        $post = Post::create($validatedData);
-
+        $dataWithImage = new UploadImage();
+        $PostImage = new Post();
+        $finalDataUser = $dataWithImage->storeAndUpdatePosts($validatedData, $PostImage, $folderNamePost = "posts");
+        $post = Post::create($finalDataUser);
         return new PostResource($post);
     }
 
@@ -66,8 +69,10 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post): PostResource
     {
         $validatedData = $request->validated();
+        $dataWithImage = new UploadImage();
+        $finalDataUser = $dataWithImage->storeAndUpdatePosts($validatedData, $post, $folderNameUserImage = "posts");
 
-        $post->update($validatedData);
+        $post->update($finalDataUser);
 
         return new PostResource($post);
     }
@@ -81,6 +86,11 @@ class PostController extends Controller
      */
     public function destroy(Request $request, Post $post): Response
     {
+        if ($post->image_url) {
+            $finalUrlImage = Str::replace('storage/', '', $post->image_url);
+            $post->image_url = $finalUrlImage;
+            Storage::disk('public')->delete($post->image_url);
+        }
         $post->delete();
         return response()->noContent();
     }
