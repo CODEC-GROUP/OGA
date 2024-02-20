@@ -22,9 +22,9 @@ class UpdatePersonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
-            'type' => 'required|string',
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'type' => 'sometimes|required|in:Volonteers,Parteners,Members',
             'email' => 'required|email',
             'phone_number' => 'required|string',
         ];

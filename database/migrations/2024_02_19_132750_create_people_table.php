@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('email')->nullable();
+            $table->string('type'); // 'Vonlonteers', 'Partener', or 'Member'
             $table->string('phone_number'); // 'Vonlonteers', 'Partener', or 'Member'
             $table->timestamps();
         });

@@ -24,7 +24,7 @@ class StorePersonRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'required|string',
-            'type' => 'sometimes|required|in:Volonteers,Parteners,membres',
+            'type' => 'sometimes|required|in:Volonteers,Parteners,Members',
             'email' => 'required|email',
             'phone_number' => 'required|string',
         ];

@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProjectCategoryController;
 use App\Http\Controllers\SettingController;
+use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
 //route to manage categories
 Route::post('/categories/{category}', [ProjectCategoryController::class, 'update']); //index,store,show and destroy categories
@@ -38,6 +40,9 @@ Route::apiResource('categories', ProjectCategoryController::class)->except('upda
 Route::apiResource('posts', PostController::class)->except('update'); //index,store,show and destroy posts
 Route::post('/posts/{post}', [PostController::class, 'update']); //update post
 
+//routes to manage person
+Route::apiResource('persons', PersonController::class); //index,store,show,update and destroy persons
+
 
 
 //route to update user loged
@@ -47,7 +52,7 @@ Route::post('/users/update/{user}', [AuthController::class, 'update']); //update
 
 //route to manage settings
 Route::apiResource('/settings', SettingController::class)->only(['update', 'show']); //show and update settings
-// });
+});
 
 //route to manage settings
 Route::apiResource('contacts', ContactController::class)->except('store', 'update'); //index,show and destroy 

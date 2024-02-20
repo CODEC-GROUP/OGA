@@ -13,7 +13,7 @@ class Person extends Model
         'name',
         'description',
         'email',
-        'number',
+        'phone_number',
         'type',
 
     ];

@@ -24,11 +24,13 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required',
             'content' => 'required',
-            'image' => 'nullable|array|image|mimes:jpeg,png,jpg|max:2048',
-            'type' => 'required',
-            'statistics' => 'nullable|array', // Add specific validation rules for Project statistics
+            'image_url' => 'nullable|array',
+            'type' => 'sometimes|required|in:Project,Blog,Event',
+            'statistics_name' => 'nullable|array', // Add specific validation rules for Project statistics
+            'statistics_value' => 'nullable|array', // Add specific validation rules for Project statistics
             'event_date' => 'nullable|date', // Add specific validation rules for Event date
             'event_time' => 'nullable|date_format:H:i', // Add specific validation rules for Event time
+            'categories_id' => 'required|array|exists:project_categories,id', //add categories
         ];
     }
 }
