@@ -20,7 +20,6 @@ return new class extends Migration
             $table->json('statistics')->nullable(); // For Project statistics
             $table->date('event_date')->nullable(); // For Event date
             $table->time('event_time')->nullable(); // For Event time
-            $table->foreignId('category_id')->nullable()->constrained('project_categories');
             $table->timestamps();
         });
     }

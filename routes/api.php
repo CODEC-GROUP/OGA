@@ -21,14 +21,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
 
 //route to manage categories
 Route::post('/categories/{category}', [ProjectCategoryController::class, 'update']); //index,store,show and destroy categories
@@ -52,7 +52,7 @@ Route::post('/users/update/{user}', [AuthController::class, 'update']); //update
 
 //route to manage settings
 Route::apiResource('/settings', SettingController::class)->only(['update', 'show']); //show and update settings
-});
+// });
 
 //route to manage settings
 Route::apiResource('contacts', ContactController::class)->except('store', 'update'); //index,show and destroy 

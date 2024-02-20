@@ -24,6 +24,7 @@ class PostController extends Controller
     {
         $posts = QueryBuilder::for(Post::class)
             ->allowedFilters('title', 'type')
+            ->with('projectCategories')
             ->defaultSort('-created_at')
             ->allowedSorts(['created_at'])
             ->paginate();

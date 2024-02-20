@@ -22,7 +22,8 @@ class PostResource extends JsonResource
             'type' => $this->type,
             'statistics' => json_decode($this->statistics),
             'event_date' => $this->event_date,
-            'event_time' => $this->event_time
+            'event_time' => $this->event_time,
+            'projectCategories' => $this->projectCategories
         ];
     }
 }
