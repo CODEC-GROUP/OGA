@@ -22,13 +22,15 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|required',
-            'content' => 'sometimes|required',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'title' => 'required',
+            'content' => 'required',
+            'image_url' => 'nullable|array',
             'type' => 'sometimes|required|in:Project,Blog,Event',
-            'statistics' => 'nullable|array', // Add specific validation rules for Project statistics
+            'statistics_name' => 'nullable|array', // Add specific validation rules for Project statistics
+            'statistics_value' => 'nullable|array', // Add specific validation rules for Project statistics
             'event_date' => 'nullable|date', // Add specific validation rules for Event date
             'event_time' => 'nullable|date_format:H:i', // Add specific validation rules for Event time
+            'categories_id' => 'required|array|exists:project_categories,id', //add categories
         ];
     }
 }

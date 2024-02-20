@@ -38,7 +38,6 @@ class ContactController extends Controller
      * @param ContactRequest $request
      * @return \Illuminate\Http\Response
      */
-
     public function contact(ContactRequest $request)
     {
         Mail::send(new ContactMail($request->validated()));
