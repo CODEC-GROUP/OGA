@@ -1,14 +1,18 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\PersonController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProjectCategoryController;
-use App\Http\Controllers\SettingController;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\EmailsNewsController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ProjectCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +61,12 @@ Route::apiResource('/settings', SettingController::class)->only(['update', 'show
 //route to manage settings
 Route::apiResource('contacts', ContactController::class)->except('store', 'update'); //index,show and destroy 
 Route::post('/contact', [ContactController::class, 'contact']); //store and send message
+
+//route to manage search
+Route::get('/search', [SearchController::class, 'searchpost']); //
+
+//route to manage subscribe email
+Route::apiResource('/emails', EmailsNewsController::class); //
+
+//route to manage newsletter
+Route::apiResource('/news', NewsController::class); //
